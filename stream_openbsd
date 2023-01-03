@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Software encoding stream script
+
+YOUTUBE_URL="rtmp://a.rtmp.youtube.com/live2"
+STREAM_KEY=$( cat $HOME/Documents/.streamkey )
+
+ffmpeg -f sndio -thread_queue_size 4096 -i snd/0.mon \
+    -f sndio -thread_queue_size 4096 -i snd/1 \
+    -filter_complex amix=inputs=2:duration=first:dropout_transition=2 \
+    -y -f x11grab -framerate 30 -thread_queue_size 8000 -s 1920x1080 -i :0 \
+    -c:v libx264 -b:v 4500k -preset veryfast -maxrate 4500k -bufsize 9000k \
+    -vf "format=yuv420p" -g 60 \
+    -c:a aac -b:a 128k -ar 44100 -threads 4 -cpu-used 0 \
+    -f flv $YOUTUBE_URL/$STREAM_KEY

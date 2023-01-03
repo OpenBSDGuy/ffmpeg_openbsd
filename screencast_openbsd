@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Software encoding screencast
+
+# This script is optimized for CPU utilization by using
+# proper audio and video codecs. Additionally, it uses two
+# sound card and has the full-duplex capability to both record
+# playback as well as microphone from two different devices
+# But the `snd/0.mon` (monitor) should be activated to capture
+# the playback sound. Check the FAQ13 - record a monitor mix
+
+NAME=$(date '+%Y-%m-%d_%H:%M:%S')
+
+ffmpeg -f sndio -thread_queue_size 4096 -i snd/0.mon \
+    -f sndio -thread_queue_size 4096 -i snd/1 \
+    -filter_complex amix=inputs=2:duration=first:dropout_transition=2 \
+    -y -f x11grab -thread_queue_size 4096 -s 1920x1080 -r 30 -i :0 \
+    -c:v libx264rgb -crf 0 -b:v 10000k -preset ultrafast \
+    -c:a flac -b:a 160k -ar 48000 \
+    "$HOME/Videos/$NAME.mkv"
