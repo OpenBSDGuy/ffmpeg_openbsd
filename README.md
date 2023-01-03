@@ -1,6 +1,6 @@
 # FFmpeg OpenBSD
 
-FFmpeg scripts for screen recording YouTube videos and live streaming on OpenBSD.
+FFmpeg scripts for screen recording YouTube videos and YouTube live streaming on OpenBSD.
 
 # Stream Key
 
