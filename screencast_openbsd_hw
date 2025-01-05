@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Hardware accelerated screencaster
+# Requires VA_API installation (only works for Intel GPUs)
+# Video quality is not as good as CPU/software rendering
+# but it's much lighter on CPU
+
+# This script is optimized for Intel VA_API GPU acceleration
+# set to use proper audio and video codecs. 
+# Additionally, it uses two sound card and has the full-duplex capability to both record playback as well as microphone from two different devices.
+# But the `snd/0.mon` (monitor) should be activated to capture
+# the playback sound. Check the FAQ13 - record a monitor mix
+
+NAME=$(date '+%Y-%m-%d_%H:%M:%S')
+
+ffmpeg -f sndio -thread_queue_size 4096 -i snd/0.mon \
+    -f sndio -thread_queue_size 4096 -i snd/1 \
+    -filter_complex amix=inputs=2:duration=first:dropout_transition=2 \
+    -hwaccel vaapi -vaapi_device /dev/dri/renderD128 -y \
+    -f x11grab -thread_queue_size 4096 -s 1920x1080 -r 30 -i :0 \
+    -c:v h264_vaapi -crf 0 -b:v 10000k -preset ultrafast \
+    -c:a flac -b:a 160k -ar 48000 \
+    -tune film -vf 'format=nv12|vaapi,hwupload' -qp 0 \
+    "$HOME/Videos/$NAME.mkv"
