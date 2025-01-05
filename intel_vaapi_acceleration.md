@@ -100,4 +100,4 @@ V....D vp9_vaapi            VP9 (VAAPI) (codec vp9)
 
 ## Using hardware-accelerated scripts
 
-Once everything is set up and confirmed, you can use scripts like `screencast_openbsd_hw` or `stream_openbsd_hd` to make the most of your hardware acceleration.
+Once everything is set up and confirmed, you can use scripts like `screencast_openbsd_hw` or `stream_openbsd_hw` to make the most of your hardware acceleration.
