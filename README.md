@@ -63,6 +63,10 @@ Putting it all together, you can create an alias,
 $ alias cmixer-microphone='export AUDIODEVICE=snd/1;cmixer;unset AUDIODEVICE'
 ```
 
+# Hardware Acceleration for Intel GPUs (OpenBSD 7.6 and Later)
+
+If you have an Intel GPU and want to utilize hardware acceleration, refer to the [Intel VA_API acceleration](intel_vaapi_acceleration.md) documentation.
+
 # Source
 
 - [OpenBSD FAQ 13 - Multimedia](https://www.openbsd.org/faq/faq13.html)
